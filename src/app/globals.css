@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* Light defaults */
+html {
+  --background: #f3f6f4;
+  --foreground: #14201a;
+  --ink: #14201a;
+  --muted: #5b6b62;
+  --brand: #0f6b4c;
+  --brand-dark: #0a4f39;
+  --brand-soft: #d7eee4;
+  --accent: #d97706;
+  --surface: #ffffff;
+  --surface-2: #e8efeb;
+  --surface-3: #d7e2dc;
+  --line: #c5d2cb;
+  --danger: #b91c1c;
+  --glow-a: #d7eee4;
+  --glow-b: #fde7c7;
+  color-scheme: light;
+}
+
+/* Higher specificity than Tailwind :root so dark actually applies */
+html.dark,
+html[data-theme="dark"] {
+  --background: #0f1612;
+  --foreground: #e8efeb;
+  --ink: #e8efeb;
+  --muted: #9aada2;
+  --brand: #3dba8b;
+  --brand-dark: #2a9a70;
+  --brand-soft: #1a3d2e;
+  --accent: #f0a84a;
+  --surface: #17201b;
+  --surface-2: #1f2b24;
+  --surface-3: #2a3a31;
+  --line: #314239;
+  --danger: #f87171;
+  --glow-a: #1a3d2e;
+  --glow-b: #3a2a14;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, var(--glow-a) 0%, transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, var(--glow-b) 0%, transparent 45%),
+    var(--background);
+  color: var(--ink);
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100vh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display), var(--font-body), sans-serif;
+}
+
+html.dark input,
+html.dark select,
+html.dark textarea,
+html[data-theme="dark"] input,
+html[data-theme="dark"] select,
+html[data-theme="dark"] textarea {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+.receipt-paper {
+  width: 80mm;
+  max-width: 100%;
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: #000;
+  background: #fff;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .print-area,
+  .print-area * {
+    visibility: visible;
+  }
+  .print-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 80mm;
+  }
+  .no-print {
+    display: none !important;
+  }
+}

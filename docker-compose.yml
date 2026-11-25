@@ -1,0 +1,32 @@
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: electric
+      POSTGRES_PASSWORD: electric
+      POSTGRES_DB: electric_shop
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backup:
+    image: postgres:16-alpine
+    depends_on:
+      - db
+    environment:
+      PGPASSWORD: electric
+    volumes:
+      - ./backups:/backups
+      - ./scripts/backup.sh:/backup.sh:ro
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        apk add --no-cache dcron >/dev/null 2>&1 || true
+        echo "0 2 * * * /backup.sh" > /etc/crontabs/root
+        /backup.sh
+        crond -f
+
+volumes:
+  pgdata:
